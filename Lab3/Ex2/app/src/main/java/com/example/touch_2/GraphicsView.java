@@ -1,8 +1,6 @@
 package com.example.touch_2;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,33 +9,34 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class GraphicsView extends View {
-    Bitmap[] frames = new Bitmap[6];
-    int i=1;
+    int x=0;
+    int y=0;
+    int d=100;
+    int r=50;
     public GraphicsView(Context context){
         super(context);
-        frames[1] = BitmapFactory.decodeResource(getResources(), R.drawable.hutao_1);
-        frames[2] = BitmapFactory.decodeResource(getResources(), R.drawable.hutao_2);
-        frames[3] = BitmapFactory.decodeResource(getResources(), R.drawable.hutao_3);
-        frames[4] = BitmapFactory.decodeResource(getResources(), R.drawable.hutao_4);
-        frames[5] = BitmapFactory.decodeResource(getResources(), R.drawable.hutao_5);
-        frames[6] = BitmapFactory.decodeResource(getResources(), R.drawable.hutao_6);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
 
-        if (i<=6){
-            canvas.drawBitmap(frames[i], 40, 40, new Paint());
+        if (x != 0 && y != 0){
+            int right = x+d;
+            int bottom = y+r;
+            Rect r = new Rect(x,y,right,bottom);
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Color.RED);
+            canvas.drawRect(r, paint);
         }
-        else {
-            i=1;
-        }
+
         invalidate();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        i++;
-        return true;
+        x=(int)event.getX();
+        y=(int)event.getY();
+        return super.onTouchEvent(event);
     }
 }
